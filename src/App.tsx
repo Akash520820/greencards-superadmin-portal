@@ -12,6 +12,14 @@ import AdminAuthPage from './Admin/AdminPages/AdminAuthPage';
 import ProtectedSuperAdminRoute from './Admin/AdminComponent/ProtectedSuperAdminRoute';
 import NotFound from './Client/ClientsComponent/NotFound';
 
+const getBasename = () => {
+  const path = window.location.pathname;
+  if (path.startsWith('/greencards-superadmin-portal')) {
+    return '/greencards-superadmin-portal';
+  }
+  return '/';
+};
+
 const router = createBrowserRouter([
   {
     path: "/admin/auth",
@@ -32,7 +40,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: "*", element: <NotFound /> },
-]);
+], { basename: getBasename() });
 
 function App() {
   return (
