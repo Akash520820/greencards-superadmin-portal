@@ -41,7 +41,7 @@ const AdminAuthPage = () => {
         return;
       }
 
-      navigate('/admin/dashboard');
+      navigate('/admin/superadmin');
     } catch {
       setError('An error occurred. Please try again.');
     } finally {
@@ -56,7 +56,7 @@ const AdminAuthPage = () => {
     try {
       const result = await adminVerifyMfa(pendingMfaStaffId, code);
       if (result.success) {
-        navigate('/admin/dashboard');
+        navigate('/admin/superadmin');
       } else {
         setError(result.error || 'Invalid or expired code');
       }

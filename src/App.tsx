@@ -35,6 +35,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Navigate to="/admin/superadmin" replace /> },
       { path: "/admin", element: <Navigate to="/admin/superadmin" replace /> },
+      { path: "/admin/dashboard", element: <Navigate to="/admin/superadmin" replace /> },
       { path: "/admin/superadmin", element: <SuperAdminDashboard /> },
       { path: "/admin/security", element: <AdminSecuritySettings /> },
     ],

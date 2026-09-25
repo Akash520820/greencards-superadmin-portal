@@ -1,11 +1,15 @@
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAdminAuth } from "../../context/AdminAuthContext";
 
-// Use this INSIDE the already admin-gated /admin routes (ProtectedAdminRoute
-// already confirmed the user is at least an admin) to further restrict a
-// page to superadmin only — e.g. the Super Admin dashboard.
+// Gates the superadmin portal routes to accounts with role "superadmin".
+// Triggers checkAdminAuth() on initial mount so staff session is verified.
 const ProtectedSuperAdminRoute = ({ children }) => {
-  const { admin, loading } = useAdminAuth();
+  const { isAdminAuthenticated, admin, loading, checkAdminAuth } = useAdminAuth();
+
+  useEffect(() => {
+    checkAdminAuth();
+  }, [checkAdminAuth]);
 
   if (loading) {
     return (
@@ -22,8 +26,8 @@ const ProtectedSuperAdminRoute = ({ children }) => {
     );
   }
 
-  if (admin?.role !== "superadmin") {
-    return <Navigate to="/admin/dashboard" replace />;
+  if (!isAdminAuthenticated || admin?.role !== "superadmin") {
+    return <Navigate to="/admin/auth" replace />;
   }
 
   return children;
