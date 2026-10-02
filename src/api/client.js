@@ -20,8 +20,8 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const isStaffRequest = originalRequest.url?.startsWith("/staff") || originalRequest.url?.startsWith("/admin") || originalRequest.url?.startsWith("/superadmin");
-    const refreshEndpoint = isStaffRequest ? "/staff/refresh-token" : "/users/refresh-token";
+    // In the superadmin portal, all authenticated sessions are staff accounts.
+    const refreshEndpoint = "/staff/refresh-token";
 
     // Do not trigger refresh token loops for login endpoints or the refresh
     // call itself (either flavor). current-user/current-staff are NOT
