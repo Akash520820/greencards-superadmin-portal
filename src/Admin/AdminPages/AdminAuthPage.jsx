@@ -17,6 +17,7 @@ const AdminAuthPage = () => {
   // Set once password login responds with { mfaRequired: true } — switches
   // the page over to the "enter your authenticator code" step.
   const [pendingMfaStaffId, setPendingMfaStaffId] = useState(null);
+  const [pendingMfaToken, setPendingMfaToken] = useState(null);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -38,6 +39,7 @@ const AdminAuthPage = () => {
 
       if (result.mfaRequired) {
         setPendingMfaStaffId(result.staffId);
+        setPendingMfaToken(result.mfaToken);
         return;
       }
 
@@ -54,7 +56,11 @@ const AdminAuthPage = () => {
     setError('');
 
     try {
-      const result = await adminVerifyMfa(pendingMfaStaffId, code);
+      const result = await adminVerifyMfa({
+        staffId: pendingMfaStaffId,
+        mfaToken: pendingMfaToken,
+        code,
+      });
       if (result.success) {
         navigate('/admin/superadmin');
       } else {

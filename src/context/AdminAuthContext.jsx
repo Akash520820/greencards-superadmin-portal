@@ -51,7 +51,12 @@ export const AdminAuthProvider = ({ children }) => {
       const res = await staffApi.loginStaff(companyEmail, password);
 
       if (res.data.mfaRequired) {
-        return { success: true, mfaRequired: true, staffId: res.data.staffId };
+        return {
+          success: true,
+          mfaRequired: true,
+          staffId: res.data.staffId,
+          mfaToken: res.data.mfaToken,
+        };
       }
 
       setAdmin(res.data.staff);
@@ -63,9 +68,9 @@ export const AdminAuthProvider = ({ children }) => {
   };
 
   // Step 2, only reached when adminLogin returned mfaRequired: true
-  const adminVerifyMfa = async (staffId, code) => {
+  const adminVerifyMfa = async ({ staffId, mfaToken, code }) => {
     try {
-      const res = await staffApi.verifyMfaLogin(staffId, code);
+      const res = await staffApi.verifyMfaLogin({ staffId, mfaToken, code });
       setAdmin(res.data.staff);
       setIsAdminAuthenticated(true);
       return { success: true, admin: res.data.staff };

@@ -6,8 +6,8 @@ import api, { unwrap } from "./client";
 export const loginStaff = (companyEmail, password) =>
   unwrap(api.post("/staff/login", { companyEmail, password }));
 
-export const verifyMfaLogin = (staffId, code) =>
-  unwrap(api.post("/staff/mfa/login", { staffId, code }));
+export const verifyMfaLogin = ({ staffId, mfaToken, code }) =>
+  unwrap(api.post("/staff/mfa/login", { staffId, mfaToken, code }));
 
 export const logoutStaff = () => unwrap(api.post("/staff/logout"));
 
@@ -24,7 +24,7 @@ export const setupMfa = () => unwrap(api.post("/staff/mfa/setup"));
 
 export const verifyMfaSetup = (code) => unwrap(api.post("/staff/mfa/verify-setup", { code }));
 
-export const disableMfa = () => unwrap(api.post("/staff/mfa/disable"));
+export const disableMfa = (password, code) => unwrap(api.post("/staff/mfa/disable", { password, code }));
 
 // ---- Staff management (superadmin only) ----
 export const getAllStaff = () => unwrap(api.get("/staff"));
