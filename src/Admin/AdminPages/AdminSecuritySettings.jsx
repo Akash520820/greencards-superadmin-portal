@@ -50,11 +50,21 @@ const AdminSecuritySettings = () => {
   const handleDisableMfa = async () => {
     setMfaLoading(true);
     try {
-      await staffApi.disableMfa();
+      const password = window.prompt('Confirm your password to disable two-factor authentication');
+      if (!password) {
+        setMfaLoading(false);
+        return;
+      }
+      const code = window.prompt('Enter the current 6-digit code from your authenticator app');
+      if (!code) {
+        setMfaLoading(false);
+        return;
+      }
+      await staffApi.disableMfa(password, code.trim());
       toast.success('Two-factor authentication disabled');
       setMfaEnabled(false);
     } catch (err) {
-      toast.error(err.message || 'Failed to disable MFA');
+      toast.error(err.message || 'Failed to disable two-factor authentication');
     } finally {
       setMfaLoading(false);
     }
